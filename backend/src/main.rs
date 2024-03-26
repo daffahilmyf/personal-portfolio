@@ -1,6 +1,5 @@
 use axum::{routing::get, Router};
 
-mod users;
 
 #[tokio::main]
 async fn main() {
