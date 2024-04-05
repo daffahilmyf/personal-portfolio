@@ -2,7 +2,7 @@ use axum::{extract::Extension, response::IntoResponse, routing::get, serve, Json
 use serde_json::json;
 use sqlx::{PgPool, Row};
 use tokio::net::TcpListener;
-use async_std::prelude::*;
+
 
 
 // Define the get_users function as before
