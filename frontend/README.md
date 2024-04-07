@@ -45,7 +45,7 @@ Place the test files in `tests/vitest` folder, following the hierarchy of `src`.
 
 ### Integration / E2E Testing
 
-Place the test files in `tests/playwright` folder according to their category. Use kebab case for file names
+Place the test files in `tests/playwright` folder according to their category. Use kebab case for file names.
 
 - integration test files: Use `*.test.js`. Name the file using the integrated module / component name as a whole following top-down principle e.g. if you're testing the integration of modules / components in Navigation Bar, then you can name the file `navbar.test.js`.
 - e2e test files: Use `*.spec.js`. Name the file using the use case e.g. `redirect-to-playground-page.spec.js`
@@ -56,7 +56,9 @@ If you're using a linux distribution that is unsupported by Playwright and you w
 
 Run this command to run Playwright docker test server:
 
-> docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it mcr.microsoft.com/playwright:v1.42.1-jammy /bin/sh -c "cd /home/pwuser && npx -y playwright@1.42.1 run-server --port 3000 --host 0.0.0.0"
+```bash
+docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it mcr.microsoft.com/playwright:v1.42.1-jammy /bin/sh -c "cd /home/pwuser && npx -y playwright@1.42.1 run-server --port 3000 --host 0.0.0.0"
+```
 
 Use these environment variables to run Playwright:
 
@@ -78,4 +80,6 @@ PW_TEST_CONNECT_WS_ENDPOINT=ws://0.0.0.0:3000/ pnpm run test:integration
 
 If you want to use Playwright web UI, you can run this command:
 
-> PW_TEST_CONNECT_WS_ENDPOINT=ws://0.0.0.0:3000/ pnpm run test:integration --ui-host=0.0.0.0 --ui-port=8080
+```bash
+PW_TEST_CONNECT_WS_ENDPOINT=ws://0.0.0.0:3000/ pnpm run test:integration --ui-host=0.0.0.0 --ui-port=8080
+```
