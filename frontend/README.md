@@ -47,7 +47,7 @@ Place the test files in `tests/vitest` folder, following the hierarchy of `src`.
 
 Place the test files in `tests/playwright` folder according to their category. Use kebab case for file names.
 
-- integration test files: Use `*.test.js`. Name the file using the integrated module / component name as a whole following top-down principle e.g. if you're testing the integration of modules / components in Navigation Bar, then you can name the file `navbar.test.js`.
+- integration test files: Use `*.test.js`. Name the file using the higher level module / component name e.g. if you're testing the integration of modules / components in Navigation Bar, then you can name the file `navbar.test.js`.
 - e2e test files: Use `*.spec.js`. Name the file using the use case e.g. `redirect-to-playground-page.spec.js`
 
 ### Playwright for Unsupported Linux Distribution
