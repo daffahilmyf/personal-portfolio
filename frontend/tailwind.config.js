@@ -21,6 +21,7 @@ export default {
 			red: {
 				100: '#fce8e7'
 			},
+			transparent: 'transparent',
 			white: '#ffffff'
 		},
 		extend: {
