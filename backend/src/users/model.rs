@@ -2,17 +2,21 @@
 use crate::utils::time::get_unix_timestamp;
 
 use anyhow::Result;
-use axum::async_trait;
-use fake::Fake;
-use fake::faker::internet::en::SafeEmail;
-use fake::faker::name::en::{FirstName, LastName};
-
-use sqlx::prelude::FromRow;
-use sqlx::types::Uuid;
-
+use fake::{
+    Fake,
+    faker::{
+        name::en::{FirstName, LastName}, 
+        internet::en::SafeEmail
+    }
+};
+use serde::{Deserialize, Serialize};
+use sqlx::{
+    prelude::FromRow, 
+    types::Uuid
+};
 use validator::Validate;
 
-#[derive(Debug, FromRow, Validate)]
+#[derive(Debug, FromRow, Validate, Serialize, Deserialize)]
 pub struct User {
     pub id: Uuid,
 
@@ -54,11 +58,7 @@ impl Default for User {
     }
 }
 
-#[async_trait]
-pub trait UserRepository {
-    async fn find_by_slug(&self, slug: &str) -> Result<Option<User>>;
-    async fn get_users(&self) -> Result<Vec<User>>;
-}
+
 
 #[cfg(test)]
 mod tests {

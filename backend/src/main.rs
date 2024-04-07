@@ -1,22 +1,13 @@
 mod utils;
 mod users;
+mod routes;
 
-use anyhow::Context;
-use axum::{routing::get, Extension, Router};
+use axum::{Extension, Router};
 use dotenv::dotenv;
-use users::controller::UserController;
-use utils::{ database::Database, service};
+use utils::{ database::Database, service::Services};
 use std::env::var;
 
-pub async fn health() -> &'static str {
-    "🚀🚀🚀 Server Running"
-}
-
-pub fn app() -> Router {
-    Router::new()
-        .nest("/users", UserController::app())
-        .route("/health", get(health))
-}
+use routes::app;
 
 #[tokio::main]
 async fn main(){
@@ -26,11 +17,10 @@ async fn main(){
     let database_url = var("DATABASE_URI").unwrap();
     let db = Database::new(&database_url.to_string(), false).await.unwrap();
 
-    let services = service::Services::new(db);
+    let services = Services::new(db);
 
     let router = Router::new()
         .nest("/api/v1", app())
-        .route("/", get(health))
         .layer(Extension(services));
 
 
@@ -38,6 +28,6 @@ async fn main(){
 
     axum::serve(listener, router.into_make_service())
         .await
-        .context("Failed to bind server");
+        .unwrap();
 }
 

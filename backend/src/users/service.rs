@@ -2,7 +2,7 @@
 
 use std::sync::Arc;
 
-use anyhow::Result;
+use anyhow::{Error, Result};
 use axum::async_trait;
 use tracing::info;
 
@@ -24,15 +24,14 @@ impl UserService {
 
 #[async_trait]
 pub trait UserServiceTrait {
-    async fn get_current_users(&self, slug: &str) -> Result<Option<User>>;
+    async fn get_current_users(&self, slug: &str) -> Result<Option<User>, Error>;
 }
 
 #[async_trait]
 impl UserServiceTrait for UserService {
-    async fn get_current_users(&self, slug: &str) -> Result<Option<User>> {
+    async fn get_current_users(&self, slug: &str) -> Result<Option<User>, Error> {
         info!("Fetching user by slug: {}", slug);
-        let user = self.repository.find_by_slug(slug).await?;
 
-        Ok(user)
+        self.repository.find_by_slug(slug).await
     }
 }

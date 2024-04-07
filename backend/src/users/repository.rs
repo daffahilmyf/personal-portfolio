@@ -1,14 +1,19 @@
+use std::sync::Arc;
 
 use anyhow::{Context, Result};
 use axum::async_trait;
-use std::sync::Arc;
-
 use crate::utils::database::Database;
-
-use super::model::{User, UserRepository};
-use super::query::{GET_USERS, GET_USER_BY_SLUG};
+use super::{model::User, query::{GET_USERS, GET_USER_BY_SLUG}};
 
 pub type DynUsersRepository = Arc<dyn UserRepository + Send + Sync>;
+
+
+#[async_trait]
+pub trait UserRepository {
+    async fn find_by_slug(&self, slug: &str) -> Result<Option<User>>;
+    async fn get_users(&self) -> Result<Vec<User>>;
+}
+
 
 #[async_trait]
 impl UserRepository for Database{
