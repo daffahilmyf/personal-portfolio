@@ -4,8 +4,8 @@ import { describe, expect, test, vi } from 'vitest';
 
 import { Button } from '$components';
 
-describe('button component', () => {
-  test('button default visible', () => {
+describe('component button', () => {
+  test('should be visible in document', () => {
     render(Button);
     const button = screen.getByRole('button');
 
@@ -13,7 +13,7 @@ describe('button component', () => {
     expect(button).toHaveTextContent('Button');
   });
 
-  test('button onClick success', async () => {
+  test('should be able to be clicked', async () => {
     const user = userEvent.setup();
     const onClick = vi.fn();
 
