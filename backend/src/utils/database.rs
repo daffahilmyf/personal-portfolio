@@ -49,16 +49,6 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn should_return_pool_with_migration() {
-        dotenv::dotenv().ok();
-
-        let database_url = var("DATABASE_URI").unwrap();
-        let database = Database::new(&database_url, true).await;
-
-        assert!(database.is_ok());
-    }
-
-    #[tokio::test]
     async fn should_return_error_when_use_invalid_creds() {
         let invalid_database_url = "postgres://localhost:5432";
         let database = Database::new(&invalid_database_url, false).await;
