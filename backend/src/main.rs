@@ -1,6 +1,7 @@
 mod utils;
 mod users;
 mod routes;
+mod reviews;
 
 use axum::{Extension, Router};
 use dotenv::dotenv;

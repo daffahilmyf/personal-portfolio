@@ -123,3 +123,6 @@ VALUES ('f6af341e-9a69-4238-8c99-ce0e0baadc67', '893588d7-ccf1-4b5d-b2b1-518acb6
 INSERT INTO jobs (company_id, user_id, title, description, job_type, started_at, ended_at)
 VALUES ('893588d7-ccf1-4b5d-b2b1-518acb6e46f1', 'f6af341e-9a69-4238-8c99-ce0e0baadc67', 'Software Engineer', 'Developing software applications', '3001', extract(epoch from CURRENT_TIMESTAMP)::BIGINT, NULL),
        ('733bddc9-1aa1-4a90-9c73-3f021db5628f', 'f6af341e-9a69-4238-8c99-ce0e0baadc67', 'QA', 'Analyzing data for insights', '3002', extract(epoch from CURRENT_TIMESTAMP)::BIGINT, NULL);
+
+INSERT INTO reviews (reviewer_id, reviewee_id, description, review_type) 
+VALUES ( 'd9a1dc84-0d8e-4c77-9e79-9398e687b26a', 'f6af341e-9a69-4238-8c99-ce0e0baadc67', 'Lorem Ipsum Dolor er Amet', '2001');
