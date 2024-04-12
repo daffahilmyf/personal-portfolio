@@ -1,58 +1,33 @@
-use axum::{extract::Extension, response::IntoResponse, routing::get, serve, Json, Router};
-use serde_json::json;
-use sqlx::{PgPool, Row};
-use tokio::net::TcpListener;
+mod utils;
+mod users;
+mod routes;
 
+use axum::{Extension, Router};
+use dotenv::dotenv;
+use utils::{ database::Database, service::Services};
+use std::env::var;
 
-
-// Define the get_users function as before
-async fn get_users(Extension(pool): Extension<PgPool>) -> impl IntoResponse {
-    let rows = match sqlx::query("SELECT id, name, email FROM users")
-        .fetch_all(&pool)
-        .await
-    {
-        Ok(rows) => rows,
-        Err(_) => {
-            return (
-                axum::http::StatusCode::INTERNAL_SERVER_ERROR,
-                "Internal server error",
-            )
-                .into_response()
-        }
-    };
-
-    let users: Vec<serde_json::Value> = rows
-        .into_iter()
-        .map(|row| {
-            json!({
-                "id": row.try_get::<i32, _>("id").unwrap_or_default(),
-                "name": row.try_get::<String, _>("name").unwrap_or_default(),
-            })
-        })
-        .collect();
-
-    (axum::http::StatusCode::OK, Json(users)).into_response()
-}
-
+use routes::app;
 
 #[tokio::main]
-async fn main() {
-    // Define Routes
+async fn main(){
 
-    let database_url = "postgres://postgres:admin@localhost:5432/personal".to_string();
-    let pool = PgPool::connect(&database_url).await.unwrap();
+    dotenv().ok();
 
-    let app = Router::new()
-        .route("/", get(|| async { "Hello, Rust!" }))
-        .route("/users", get(get_users))
-        .layer(Extension(pool));
+    let database_url = var("DATABASE_URI").unwrap();
+    let db = Database::new(&database_url.to_string(), false).await.unwrap();
 
-    println!("Running on http://localhost:3000");
-    // Start Server
+    let services = Services::new(db);
 
-    let tcp_listener = TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let router = Router::new()
+        .nest("/api/v1", app())
+        .layer(Extension(services));
 
-    serve(tcp_listener, app.into_make_service())
+
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+
+    axum::serve(listener, router.into_make_service())
         .await
         .unwrap();
 }
+

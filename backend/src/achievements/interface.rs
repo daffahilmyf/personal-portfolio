@@ -1,9 +1,10 @@
 use serde::{Serialize, Deserialize};
-use bson::oid::ObjectId;
+
+use sqlx::types::Uuid;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Achievement {
-    id: ObjectId,
+    id: Uuid,
     name: String,
     description: String,
     issuer: String,

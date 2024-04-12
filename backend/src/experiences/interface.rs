@@ -1,12 +1,10 @@
 use serde::{Serialize, Deserialize};
-use bson::oid::ObjectId;
+use sqlx::types::Uuid;
 
-
-// crate::utils::EXPERIENCE_TYPE;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Experience {
-    id: ObjectId,
+    id: Uuid,
     name: String,
     description: String,
     issuer: String,
