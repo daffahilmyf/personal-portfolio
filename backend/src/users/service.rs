@@ -25,6 +25,7 @@ impl UserService {
 #[async_trait]
 pub trait UserServiceTrait {
     async fn get_current_users(&self, slug: &str) -> Result<Option<User>, Error>;
+    async fn get_users(&self) -> Result<Vec<User>, Error>;
 }
 
 #[async_trait]
@@ -33,5 +34,11 @@ impl UserServiceTrait for UserService {
         info!("Fetching user by slug: {}", slug);
 
         self.repository.find_by_slug(slug).await
+    }
+
+    async fn get_users(&self) -> Result<Vec<User>, Error> {
+        info!("Fetching all users");
+
+        self.repository.get_users().await
     }
 }
